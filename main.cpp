@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   }
       Aux::Log::setLogLevel("INFO");
   for (int i = 0; i < num_runs; i++) {
-    INFO("Started run: ", i);
+    std::cout << "Run " << i + 1 << " of " << num_runs << std::endl;
     runPLM(G);
   }
 
