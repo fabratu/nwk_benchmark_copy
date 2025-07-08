@@ -39,7 +39,7 @@ if type == "PLM":
         timer_nk_end = time.time()
         print("Modularity computation runtime: ", timer_nk_end - timer_nk_start)
 
-elif type == "ParallelLeiden":
+elif type == "PLL":
     for i in range(50):
         print("Run: ", i + 1)
         timer_nk_start = time.time()
