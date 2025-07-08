@@ -10,10 +10,7 @@
 #include <networkit/graph/Graph.hpp>
 #include <networkit/graph/GraphTools.hpp>
 #include <networkit/io/METISGraphReader.hpp>
-#include <networkit/io/MatrixMarketGraphReader.hpp>
 #include <networkit/io/NetworkitBinaryReader.hpp>
-#include <networkit/matching/BSuitorMatcher.hpp>
-#include <networkit/matching/DynamicBSuitorMatcher.hpp>
 
 using std::chrono::high_resolution_clock;
 using std::chrono::seconds;
@@ -39,11 +36,6 @@ bool parseInput(std::vector<std::string> args) {
     printUse();
     std::cerr << "first argument path must a path to a graph file" << std::endl;
     return false;
-  } else if (format == "mtx") {
-    G = MatrixMarketGraphReader{}.read(
-        file); // (015c2ee30a) MatrixMarketGraphReader treats all directed
-               // graphs as undirected and chooses one edgeweight in case of
-               // weighted multi edges for the experiments
   } else if (format == "nkb") {
     G = NetworkitBinaryReader{}.read(file);
   } else if (format == "graph") {
