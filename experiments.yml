@@ -1,0 +1,111 @@
+builds:
+  - name: networkit
+    git: 'https://github.com/networkit/networkit.git'
+    regenerate:
+      - args: ['git', 'submodule', 'update', '--init']
+    configure:
+      - args:
+          - 'cmake'
+          - '-DCMAKE_INSTALL_PREFIX=@THIS_PREFIX_DIR@'
+          - '-DCMAKE_BUILD_TYPE=Release'
+          - '-DNETWORKIT_CXX_STANDARD=20'
+          - '@THIS_CLONE_DIR@'
+        environ:
+            'CXX': 'g++'
+    compile:
+      - args: ['make', '-j@PARALLELISM@']
+    install:
+      - args: ['make', 'install']
+  
+  - name: nwk_eval
+    git: 'https://github.com/fabratu/nwk_benchmark_copy.git'
+    requires:
+      - networkit
+    configure:
+      - args:
+          - 'cmake'
+          - '-DCMAKE_INSTALL_PREFIX=@THIS_PREFIX_DIR@'
+          - '-DCMAKE_BUILD_TYPE=Release'
+          - '-DCMAKE_CXX_STANDARD=20' 
+          - '@THIS_CLONE_DIR@'
+        environ:
+            'CXX': 'g++'
+    compile:
+      - args: ['make', '-j@PARALLELISM@']
+    install:
+      - args: ['make', 'install']
+    extra_paths: ['@THIS_PREFIX_DIR@']
+
+revisions:
+  - name: comparison
+    build_version:
+        'networkit': 'master'
+        'nwk_eval': 'main'
+
+instances:
+  # - repo: local
+  #   set: nk
+  #   items:
+  #     - advogato.nkb
+  #     - com-youtube.nkb
+  #     - dimacs10-uk-2002.nkb
+  #     - flickr-growth.nkb
+  #     - flixster.nkb
+  #     - hyp-24-1.nkb
+  #     - hyp-24-2.nkb
+  #     - hyp-25-1.nkb
+  #     - hyp-25-2.nkb
+  #     - hyp-26-1.nkb
+  #     - hyp-26-2.nkb
+  #     - mouse_gene.mtx.nkb
+  #     - orkut-links.nkb
+  #     - rmat-24-1.nkb
+  #     - rmat-24-2.nkb
+  #     - rmat-25-1.nkb
+  #     - twitter.nkb
+  #     - wikipedia_link_en.nkb
+  #     - youtube-u-growth.nkb
+  - repo: local
+    set: all
+    items:
+      - africa
+      - asia
+      - austria
+      - belgium
+      - flickr-growth
+      - france
+      - hyp-24-1
+      - hyp-24-2
+      - hyp-24-3
+      - rmat-b
+      - rmat-er
+      - rmat-g
+
+experiments:
+  - name: python
+    args: ['python', 'eval_nk.py', '@INSTANCE@.nkb', '@EXTRA_ARGS@']
+    num_nodes: 1
+    procs_per_node: 1
+    num_threads: 24
+    stdout: out
+    environ:
+      OMP_NUM_THREADS: 24
+  - name: cpp
+    use_builds: [nwk_eval]
+    args: ['nwk_eval', '@INSTANCE@.nkb', '@EXTRA_ARGS@']
+    num_nodes: 1
+    procs_per_node: 1
+    num_threads: 24
+    stdout: out
+    environ:
+      OMP_NUM_THREADS: 24
+
+matrix:
+  include:
+    # Test operation axis on real graphs
+    - experiments: [python]
+      instsets: [all]
+      revisions: [comparison]
+    - experiments: [cpp]
+      instsets: [all]
+      revisions: [comparison]
