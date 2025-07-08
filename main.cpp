@@ -7,6 +7,7 @@
 #include <networkit/auxiliary/Log.hpp>
 #include <networkit/auxiliary/Random.hpp>
 #include <networkit/community/Modularity.hpp>
+#include <networkit/community/ParallelLeiden.hpp>
 #include <networkit/community/PLM.hpp>
 #include <networkit/graph/Graph.hpp>
 #include <networkit/graph/GraphTools.hpp>
@@ -65,14 +66,14 @@ bool parseInput(std::vector<std::string> args) {
 void runPLM(Graph &G) {
 
     auto t1 = high_resolution_clock::now();
-    PLM plm(G);
-    plm.run();
+    ParallelLeiden pll(G);
+    pll.run();
     auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
     std::cout << "PLM runtime: " << rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
-    auto part = plm.getPartition();
+    auto part = pll.getPartition();
     t2 = high_resolution_clock::now();
     dur part_rt = t2 - t1;
     std::cout << "Partition extraction runtime: " << part_rt.count() << "s" << std::endl;

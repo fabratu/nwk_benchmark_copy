@@ -1,6 +1,6 @@
 builds:
   - name: networkit
-    git: 'https://github.com/networkit/networkit.git'
+    git: 'https://github.com/adsharma/networkit.git'
     regenerate:
       - args: ['git', 'submodule', 'update', '--init']
     configure:
@@ -16,7 +16,7 @@ builds:
       - args: ['make', '-j@PARALLELISM@']
     install:
       - args: ['make', 'install']
-  
+
   - name: nwk_eval
     git: 'https://github.com/fabratu/nwk_benchmark_copy.git'
     requires:
@@ -39,32 +39,10 @@ builds:
 revisions:
   - name: comparison
     build_version:
-        'networkit': 'master'
+        'networkit': 'leiden_fixes'
         'nwk_eval': 'main'
 
 instances:
-  # - repo: local
-  #   set: nk
-  #   items:
-  #     - advogato.nkb
-  #     - com-youtube.nkb
-  #     - dimacs10-uk-2002.nkb
-  #     - flickr-growth.nkb
-  #     - flixster.nkb
-  #     - hyp-24-1.nkb
-  #     - hyp-24-2.nkb
-  #     - hyp-25-1.nkb
-  #     - hyp-25-2.nkb
-  #     - hyp-26-1.nkb
-  #     - hyp-26-2.nkb
-  #     - mouse_gene.mtx.nkb
-  #     - orkut-links.nkb
-  #     - rmat-24-1.nkb
-  #     - rmat-24-2.nkb
-  #     - rmat-25-1.nkb
-  #     - twitter.nkb
-  #     - wikipedia_link_en.nkb
-  #     - youtube-u-growth.nkb
   - repo: local
     set: all
     items:
@@ -77,9 +55,11 @@ instances:
       - hyp-24-1.nkb
       - hyp-24-2.nkb
       - hyp-24-3.nkb
+      - livejournal-links.nkb
       - rmat-b.nkb
       - rmat-er.nkb
       - rmat-g.nkb
+      - soc-LiveJournal1.nkb
 
 experiments:
   - name: python

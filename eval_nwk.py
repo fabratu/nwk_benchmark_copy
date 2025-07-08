@@ -9,7 +9,6 @@ instance = sys.argv[1]
 
 
 G = nk.readGraph(instance)
-G = nk.graphtools.toUndirected(G)
 G.removeMultiEdges()
 G.removeSelfLoops()
 
@@ -18,7 +17,7 @@ G.removeSelfLoops()
 for i in range(50):
     print("Run: ", i + 1)
     timer_nk_start = time.time()
-    alg = nk.community.PLM(G)
+    alg = nk.community.ParallelLeiden(G)
     alg.run()
     timer_nk_end = time.time() 
     print("PLM runtime: ", timer_nk_end - timer_nk_start)
