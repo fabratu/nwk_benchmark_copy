@@ -65,10 +65,10 @@ bool parseInput(std::vector<std::string> args) {
 
 void runPLM(Graph &G) {
 
-    const auto t1 = high_resolution_clock::now();
+    auto t1 = high_resolution_clock::now();
     PLM plm(G);
     plm.run();
-    const auto t2 = high_resolution_clock::now();
+    auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
     INFO("PLM runtime: ", rt.count(), "s");
 
