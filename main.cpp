@@ -29,6 +29,14 @@ void printUse() {
                "binary format\n";
 }
 
+std::string getFileFormat(const std::string &file) {
+  auto pos = file.find_last_of(".");
+  if (pos != std::string::npos) {
+    return file.substr(pos + 1);
+  }
+  return "";
+}
+
 bool parseInput(std::vector<std::string> args) {
   const auto file = args.at(1);
   const auto format = getFileFormat(file);
@@ -55,8 +63,6 @@ bool parseInput(std::vector<std::string> args) {
   return true;
 }
 
-
-template <typename BType>
 void runPLM(Graph &G) {
 
     const auto t1 = high_resolution_clock::now();
@@ -73,22 +79,17 @@ void runPLM(Graph &G) {
     INFO("PLM partitioning runtime: ", part_rt.count(), "s");
 
     t1 = high_resolution_clock::now();
-    Modularity mod(G, plm.getPartition());
-    double stat_w = mod.getQuality();
+    Modularity mod;
+    double stat_w = mod.getQuality(plm.getPartition(), G);
     t2 = high_resolution_clock::now();
     dur com_rt = t2 - t1;
     INFO("PLM community detection runtime: ", com_rt.count(), "s");
 }
 
 int main(int argc, char *argv[]) {
-  if (argc != 5) {
-    printUse();
-    return 1;
-  }
 
   Aux::Log::setLogLevel("QUIET");
 
-  Aux::Random::setSeed(0, true);
 
   if (!parseInput(std::vector<std::string>(argv, argv + argc))) {
     return 1;
