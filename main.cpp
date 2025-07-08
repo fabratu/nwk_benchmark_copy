@@ -93,7 +93,6 @@ int main(int argc, char *argv[]) {
   if (!parseInput(std::vector<std::string>(argv, argv + argc))) {
     return 1;
   }
-      Aux::Log::setLogLevel("INFO");
   for (int i = 0; i < num_runs; i++) {
     std::cout << "Run " << i + 1 << " of " << num_runs << std::endl;
     runPLM(G);
