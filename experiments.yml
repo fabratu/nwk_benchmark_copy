@@ -68,22 +68,22 @@ instances:
   - repo: local
     set: all
     items:
-      - africa
-      - asia
-      - austria
-      - belgium
-      - flickr-growth
-      - france
-      - hyp-24-1
-      - hyp-24-2
-      - hyp-24-3
-      - rmat-b
-      - rmat-er
-      - rmat-g
+      - africa.nkb
+      - asia.nkb
+      - austria.nkb
+      - belgium.nkb
+      - flickr-growth.nkb
+      - france.nkb
+      - hyp-24-1.nkb
+      - hyp-24-2.nkb
+      - hyp-24-3.nkb
+      - rmat-b.nkb
+      - rmat-er.nkb
+      - rmat-g.nkb
 
 experiments:
   - name: python
-    args: ['python', 'eval_nk.py', '@INSTANCE@.nkb', '@EXTRA_ARGS@']
+    args: ['python', 'eval_nwk.py', '@INSTANCE@', '@EXTRA_ARGS@']
     num_nodes: 1
     procs_per_node: 1
     num_threads: 24
@@ -92,7 +92,7 @@ experiments:
       OMP_NUM_THREADS: 24
   - name: cpp
     use_builds: [nwk_eval]
-    args: ['nwk_eval', '@INSTANCE@.nkb', '@EXTRA_ARGS@']
+    args: ['nwk_eval', '@INSTANCE@', '@EXTRA_ARGS@']
     num_nodes: 1
     procs_per_node: 1
     num_threads: 24

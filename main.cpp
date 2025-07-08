@@ -73,14 +73,14 @@ void runPLM(Graph &G) {
     INFO("PLM runtime: ", rt.count(), "s");
 
     t1 = high_resolution_clock::now();
-    plm.getPartition();
+    part = plm.getPartition();
     t2 = high_resolution_clock::now();
     dur part_rt = t2 - t1;
     INFO("PLM partitioning runtime: ", part_rt.count(), "s");
 
     t1 = high_resolution_clock::now();
     Modularity mod;
-    double stat_w = mod.getQuality(plm.getPartition(), G);
+    double stat_w = mod.getQuality(part, G);
     t2 = high_resolution_clock::now();
     dur com_rt = t2 - t1;
     INFO("PLM community detection runtime: ", com_rt.count(), "s");

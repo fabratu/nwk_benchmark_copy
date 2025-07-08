@@ -16,9 +16,6 @@ G = nk.graphtools.toUndirected(G)
 G.removeMultiEdges()
 G.removeSelfLoops()
 
-print(G.numberOfEdges())
-
-
 ### PLM
 
 timer_nk_start = time.time()
@@ -28,12 +25,12 @@ timer_nk_end = time.time()
 print(timer_nk_end - timer_nk_start)
 
 timer_nk_start = time.time()
-alg.getPartition()
+part = alg.getPartition()
 timer_nk_end = time.time()
 print(timer_nk_end - timer_nk_start)
 
 timer_nk_start = time.time()
 mod = nk.community.Modularity()
-modularity = mod.getQuality(alg.getPartition(), G)
+modularity = mod.getQuality(part, G)
 timer_nk_end = time.time()
 print(timer_nk_end - timer_nk_start)
