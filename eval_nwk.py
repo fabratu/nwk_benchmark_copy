@@ -20,6 +20,10 @@ if type == "PLM":
         print("Run: ", i + 1)
         timer_nk_start = time.time()
         alg = nk.community.ParallelLeiden(G)
+        timer_nk_end = time.time()
+        print("PLM construction time: ", timer_nk_end - timer_nk_start)
+
+        timer_nk_start = time.time()
         alg.run()
         timer_nk_end = time.time() 
         print("PLM runtime: ", timer_nk_end - timer_nk_start)
@@ -40,6 +44,10 @@ elif type == "ParallelLeiden":
         print("Run: ", i + 1)
         timer_nk_start = time.time()
         alg = nk.community.ParallelLeiden(G)
+        timer_nk_end = time.time()
+        print("PLL construction time: ", timer_nk_end - timer_nk_start)
+
+        timer_nk_start = time.time()
         alg.run()
         timer_nk_end = time.time() 
         print("PLL runtime: ", timer_nk_end - timer_nk_start)

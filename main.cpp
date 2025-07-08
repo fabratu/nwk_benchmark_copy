@@ -68,11 +68,16 @@ bool parseInput(std::vector<std::string> args) {
 void runPLM(Graph &G) {
 
     auto t1 = high_resolution_clock::now();
-    PLM pll(G);
-    pll.run();
+    PLM plm(G);
     auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
-    std::cout << "PLM runtime: " << rt.count() << "s" << std::endl;
+    std::cout << "PLM construction time: " << rt.count() << "s" << std::endl;
+
+    t1 = high_resolution_clock::now();
+    plm.run();
+    t2 = high_resolution_clock::now();
+    dur run_rt = t2 - t1;
+    std::cout << "PLM runtime: " << run_rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
     auto part = pll.getPartition();
@@ -92,10 +97,15 @@ void runPLL(Graph &G) {
 
     auto t1 = high_resolution_clock::now();
     ParallelLeiden pll(G);
-    pll.run();
     auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
-    std::cout << "PLL runtime: " << rt.count() << "s" << std::endl;
+    std::cout << "PLL construction time: " << rt.count() << "s" << std::endl;
+
+    t1 = high_resolution_clock::now();
+    pll.run();
+    t2 = high_resolution_clock::now();
+    dur run_rt = t2 - t1;
+    std::cout << "PLL runtime: " << run_rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
     auto part = pll.getPartition();
