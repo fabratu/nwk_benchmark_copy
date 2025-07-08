@@ -7,30 +7,29 @@ instance = sys.argv[1]
 
 ### Reader
 
-timer_nk_start = time.time()
-G = nk.readGraph(instance)
-timer_nk_end = time.time()
-print(timer_nk_end - timer_nk_start)
 
+G = nk.readGraph(instance)
 G = nk.graphtools.toUndirected(G)
 G.removeMultiEdges()
 G.removeSelfLoops()
 
 ### PLM
 
-timer_nk_start = time.time()
-alg = nk.community.PLM(G)
-alg.run()
-timer_nk_end = time.time() 
-print(timer_nk_end - timer_nk_start)
+for i in range(50):
+    print("Run: ", i + 1)
+    timer_nk_start = time.time()
+    alg = nk.community.PLM(G)
+    alg.run()
+    timer_nk_end = time.time() 
+    print("PLM runtime: ", timer_nk_end - timer_nk_start)
 
-timer_nk_start = time.time()
-part = alg.getPartition()
-timer_nk_end = time.time()
-print(timer_nk_end - timer_nk_start)
+    timer_nk_start = time.time()
+    part = alg.getPartition()
+    timer_nk_end = time.time()
+    print("Partition extraction runtime: ", timer_nk_end - timer_nk_start)
 
-timer_nk_start = time.time()
-mod = nk.community.Modularity()
-modularity = mod.getQuality(part, G)
-timer_nk_end = time.time()
-print(timer_nk_end - timer_nk_start)
+    timer_nk_start = time.time()
+    mod = nk.community.Modularity()
+    modularity = mod.getQuality(part, G)
+    timer_nk_end = time.time()
+    print("Modularity computation runtime: ", timer_nk_end - timer_nk_start)

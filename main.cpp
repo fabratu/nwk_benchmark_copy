@@ -1,5 +1,6 @@
 #include <chrono>
 #include <cstring>
+#include <iostream>
 #include <optional>
 #include <networkit/Globals.hpp>
 #include <networkit/algebraic/AlgebraicGlobals.hpp>
@@ -20,7 +21,7 @@ using namespace NetworKit;
 
 Graph G;
 
-int num_runs = 5;
+int num_runs = 50;
 count n;
 
 void printUse() {
@@ -58,8 +59,6 @@ bool parseInput(std::vector<std::string> args) {
   assert(!G.isDirected());
 
   n = G.numberOfNodes();
-    INFO("Number of nodes: ", n);
-    INFO("Number of edges: ", G.numberOfEdges());
   return true;
 }
 
@@ -70,20 +69,20 @@ void runPLM(Graph &G) {
     plm.run();
     auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
-    INFO("PLM runtime: ", rt.count(), "s");
+    std::cout << "PLM runtime: " << rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
     auto part = plm.getPartition();
     t2 = high_resolution_clock::now();
     dur part_rt = t2 - t1;
-    INFO("PLM partitioning runtime: ", part_rt.count(), "s");
+    std::cout << "Partition extraction runtime: " << part_rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
     Modularity mod;
     double stat_w = mod.getQuality(part, G);
     t2 = high_resolution_clock::now();
     dur com_rt = t2 - t1;
-    INFO("PLM community detection runtime: ", com_rt.count(), "s");
+    std::cout << "Modularity computation runtime: " << com_rt.count() << "s" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
