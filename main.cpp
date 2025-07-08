@@ -80,7 +80,7 @@ void runPLM(Graph &G) {
     std::cout << "PLM runtime: " << run_rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
-    auto part = pll.getPartition();
+    auto part = plm.getPartition();
     t2 = high_resolution_clock::now();
     dur part_rt = t2 - t1;
     std::cout << "Partition extraction runtime: " << part_rt.count() << "s" << std::endl;
