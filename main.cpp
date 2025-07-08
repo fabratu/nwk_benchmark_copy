@@ -24,6 +24,7 @@ Graph G;
 
 int num_runs = 50;
 count n;
+std::string type = "PLM";
 
 void printUse() {
   std::cerr << "Usage: ./eval_nwk [0]\n"
@@ -59,18 +60,42 @@ bool parseInput(std::vector<std::string> args) {
   G.removeMultiEdges();
   assert(!G.isDirected());
 
-  n = G.numberOfNodes();
+  const auto requested_type = args.at(2);
+  type = requested_type;
   return true;
 }
 
 void runPLM(Graph &G) {
 
     auto t1 = high_resolution_clock::now();
-    ParallelLeiden pll(G);
+    PLM pll(G);
     pll.run();
     auto t2 = high_resolution_clock::now();
     dur rt = t2 - t1;
     std::cout << "PLM runtime: " << rt.count() << "s" << std::endl;
+
+    t1 = high_resolution_clock::now();
+    auto part = pll.getPartition();
+    t2 = high_resolution_clock::now();
+    dur part_rt = t2 - t1;
+    std::cout << "Partition extraction runtime: " << part_rt.count() << "s" << std::endl;
+
+    t1 = high_resolution_clock::now();
+    Modularity mod;
+    double stat_w = mod.getQuality(part, G);
+    t2 = high_resolution_clock::now();
+    dur com_rt = t2 - t1;
+    std::cout << "Modularity computation runtime: " << com_rt.count() << "s" << std::endl;
+}
+
+void runPLL(Graph &G) {
+
+    auto t1 = high_resolution_clock::now();
+    ParallelLeiden pll(G);
+    pll.run();
+    auto t2 = high_resolution_clock::now();
+    dur rt = t2 - t1;
+    std::cout << "PLL runtime: " << rt.count() << "s" << std::endl;
 
     t1 = high_resolution_clock::now();
     auto part = pll.getPartition();
@@ -94,9 +119,19 @@ int main(int argc, char *argv[]) {
   if (!parseInput(std::vector<std::string>(argv, argv + argc))) {
     return 1;
   }
-  for (int i = 0; i < num_runs; i++) {
-    std::cout << "Run " << i + 1 << " of " << num_runs << std::endl;
-    runPLM(G);
+
+  if(type == "PLM") {
+    std::cout << "Running PLM..." << std::endl;
+    for (int i = 0; i < num_runs; i++) {
+      std::cout << "Run " << i + 1 << " of " << num_runs << std::endl;
+      runPLM(G);
+    }
+  } else if (type == "PLL") {
+    std::cout << "Running ParallelLeiden..." << std::endl;
+    for (int i = 0; i < num_runs; i++) {
+      std::cout << "Run " << i + 1 << " of " << num_runs << std::endl;
+      runPLL(G);
+    }
   }
 
   return 0;

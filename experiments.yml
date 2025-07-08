@@ -80,12 +80,22 @@ experiments:
     environ:
       OMP_NUM_THREADS: 24
 
+variants:
+  - axis: 'type'
+    items:
+      - name: 'PLM'
+        extra_args: ['PLM']
+      - name: 'PLL'
+        extra_args: ['PLL']
+
 matrix:
   include:
     # Test operation axis on real graphs
     - experiments: [python]
+      axes: [type]
       instsets: [all]
       revisions: [comparison]
     - experiments: [cpp]
+      axes: [type]
       instsets: [all]
       revisions: [comparison]
